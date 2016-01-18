@@ -218,17 +218,6 @@ static int lua_cocos2dx_unzipfile(lua_State* L){
             CCLOG("'unzipfile' function wrong 文件不存在 ");
             return 0;
         }
-        // 获取文件名字
-        unsigned long pos = zippath.find_last_of('/');
-        string s(zippath.substr(pos + 1));
-        pos = s.find_last_of('.');
-        string s2(s.substr(0,pos));
-        pathToSave = pathToSave + s2 + "/";
-        
-        if(FileUtils::getInstance()->isFileExist(pathToSave)){
-            FileUtils::getInstance()->removeDirectory(pathToSave);
-        }
-        FileUtils::getInstance()->createDirectory(pathToSave);
 
         uncompress(zippath,pathToSave);
         return 1;
@@ -245,42 +234,13 @@ tolua_lerror:
 }
 
 
-int lua_cocos2dx_writeDataToFile(lua_State *L){
-    if(nullptr == L)
-        return 0;
-    int argc = lua_gettop(L);
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-    if(2 == argc){
-#if COCOS2D_DEBUG >= 1
-        if (!tolua_isstring(L, 1, 0, &tolua_err) ||
-            !tolua_isstring(L, 2, 0, &tolua_err))
-            goto tolua_lerror;
-#endif
-        std::string dataStr = tolua_tostring(L, 1, "");
-        std::string pathToSave = tolua_tostring(L, 2, "");
-        Data data = Data();
-        data.copy((unsigned char * )dataStr.c_str(), dataStr.length());
-        FileUtils::getInstance()->writeDataToFile(data, pathToSave);
-        return 1;
-    }
-    CCLOG("'writeDataToFile' function wrong number of arguments: %d, was expecting %d\n", argc, 2);
-    return 0;
-    
-#if COCOS2D_DEBUG >= 1
-tolua_lerror:
-    tolua_error(L,"#ferror in function 'writeDataToFile'.",&tolua_err);
-    return 0;
-#endif
-}
+
 
 int register_lua_zip_sample(lua_State* L)
 {
     tolua_open(L);
     tolua_module(L, NULL, 0);
     tolua_beginmodule(L, NULL);
-    tolua_function(L, "writeDataToFile", lua_cocos2dx_writeDataToFile);
     tolua_function(L, "unzipfile", lua_cocos2dx_unzipfile);
     tolua_endmodule(L);
     return 0;
