@@ -1,4 +1,12 @@
 # lua_zip
-lua zip for cocos2d-x 3.x
+gunzip for cocos2d-lua 3.x 
 
-cocos2d -x lua 解压缩
+## how to use
+
+- add lua_zip to Classes 
+
+- 修改cocos2d unzip.h 文件， 把 #include "CPlatformDefine.h" 改成  #include "platform/CCPlatformDefine.h "
+
+- 注册 register_lua_zip_sample(L);
+
+- 在lua 中 调用 unzipfile(zipfile,path)
