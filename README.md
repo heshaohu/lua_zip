@@ -1,5 +1,5 @@
 # lua_zip
-gunzip for cocos2d-lua 3.x 
+unzip for cocos2d-lua 3.x 
 
 ## how to use
 
